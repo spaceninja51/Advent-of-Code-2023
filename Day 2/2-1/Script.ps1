@@ -7,11 +7,15 @@ class Round {
     [int] $total
 }
 
+$rmax = 12
+$gmax = 13
+$bmax = 14
+$tmax = $rmax + $gmax + $bmax
 # Iterate through each line of the input text and break the line into the two strings made of the text on either side of :
 foreach ($line in $text.Split([Environment]::NewLine, [StringSplitOptions]::RemoveEmptyEntries)) {
-
+    
+    $invalid, $countNo, $answer, $gameID = 0
     $lineText = $line.Split(":")
-    $gameID = $lineText[0] -replace '[a-zA-Z]',''
     
     foreach($pull in $lineText[1].Split(";")) {
         # create a new round object after each ;
@@ -26,19 +30,38 @@ foreach ($line in $text.Split([Environment]::NewLine, [StringSplitOptions]::Remo
             switch ($countColor) {
                 "red" {
                     $round.red = $countNo
+                    if ($countNo -gt $rmax) {
+                        $invalid = 1
+                    }
                     break
                 }
                 "green" {
                     $round.green = $countNo
+                    if ($countNo -gt $gmax) {
+                        $invalid = 1
+                    }
                     break
                 }
                 "blue" {
                     $round.blue = $countNo
+                    if ($countNo -gt $bmax) {
+                        $invalid = 1
+                    }
                     break
                 }
             }
         }
         # calculate total cubes shown in a round
         $round.total = $round.red + $round.green + $round.blue
+        if ($round.total -gt $tmax) {
+            $invalid = 1
+        }
     }
+
+    if (!$invalid) {
+        $gameID = $lineText[0].Trim() -replace '[a-zA-Z]',''
+        $answer =+ $gameID
+    }
+
 }
+$answer
