@@ -1,3 +1,4 @@
+<# Gotter Done #>
 # Define a hashtable to map words (keys) to their numeric equivalents
 $wordToNumber = @{
     "one" = "o1e"
