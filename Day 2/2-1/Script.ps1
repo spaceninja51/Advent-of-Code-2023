@@ -14,7 +14,7 @@ $tmax = $rmax + $gmax + $bmax
 # Iterate through each line of the input text and break the line into the two strings made of the text on either side of :
 foreach ($line in $text.Split([Environment]::NewLine, [StringSplitOptions]::RemoveEmptyEntries)) {
     
-    $invalid, $countNo, $answer, $gameID = 0
+    $countNo, $answer, $gameID, $invalid = 0
     $lineText = $line.Split(":")
     
     foreach($pull in $lineText[1].Split(";")) {
@@ -58,9 +58,15 @@ foreach ($line in $text.Split([Environment]::NewLine, [StringSplitOptions]::Remo
         }
     }
 
-    if (!$invalid) {
-        $gameID = $lineText[0].Trim() -replace '[a-zA-Z]',''
-        $answer =+ $gameID
+    switch ($invalid) {
+        0 {
+            $gameID = $lineText[0] -replace '[a-zA-Z]',''
+            $answer += $gameID
+            break
+        }
+        1 {
+            break
+        }
     }
 
 }
