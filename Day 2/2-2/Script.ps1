@@ -4,12 +4,15 @@ class Round {
     [int] $red
     [int] $green
     [int] $blue
-    [int] $total
+    #[int] $total
 }
 
 class Game {
-    [Round] $Round
     [int] $ID
+    [int] $bmax = 0
+    [int] $gmax = 0
+    [int] $rmax = 0
+    [Array] $Rounds
 }
 <# initialize variables #>
 $gameID, $answer1 = 0
@@ -20,25 +23,24 @@ $gameID, $answer1 = 0
 #$tmax = $rmax + $gmax + $bmax
 
 <# data to be processed #>
-$text = Get-Content "Advent-of-Code-2023\Day 2\Input.txt"
+$text = Get-Content "C:\Users\cwg24\OneDrive\Desktop\Nerd Shit\Scripting\Advent-of-Code-2023\Day 2\Input.txt"
 
 <# Iterate through each line of the input text and break the line into the two strings made of the text on either side of :, resetting the status of invalid on each new line
  / from Part 1 #>
 
 foreach ($line in $text.Split([Environment]::NewLine, [StringSplitOptions]::RemoveEmptyEntries)) {
     
-    [Game]::new()
-    $game.ID = $lineText[0] -replace '[a-zA-Z]',''
-    $roundNum = 0
+    $currentGame = [Game]::new()
     #$invalid = 0
     $lineText = $line.Split(":")
-    
+    $currentGame.ID = $lineText[0] -replace '[a-zA-Z]',''
+    $roundNum = 0
 
     foreach($pull in $lineText[1].Split(";")) {
         <# create a new round object after each ;. For part 2, keep track of round number as well#>
-        $Game.round = [Round]::new()
+        $currentRound = [Round]::new()
         $roundNum++
-        $this.Game.round.ID = $roundNum
+        $currentRound.ID = $roundNum
 
         foreach ($count in $pull.Split(",").Trim()) {
             <# check the number to be set #>
@@ -48,38 +50,39 @@ foreach ($line in $text.Split([Environment]::NewLine, [StringSplitOptions]::Remo
             $countColor = $count.Split(" ")[1].Trim()
             switch ($countColor) {
                 "red" {
-                    $round.red = $countNo
-                    #if ($countNo -gt $rmax) {
-                    #   $invalid = 1
-                    #}
-                    break
+                    $currentRound.red = $countNo
+                    if ($countNo -gt $currentGame.rmax) {
+                        #$invalid = 1
+                        $currentGame.rmax = $countNo
+                    }
                 }
                 "green" {
-                    $round.green = $countNo
-                    #if ($countNo -gt $gmax) {
-                    #   $invalid = 1
-                    #}
-                    break
+                    $currentRound.green = $countNo
+                    if ($countNo -gt $currentGame.gmax) {
+                        #$invalid = 1
+                        $currentGame.gmax = $countNo
+                    }
                 }
                 "blue" {
-                    $round.blue = $countNo
-                    #if ($countNo -gt $bmax) {
-                    #   $invalid = 1
-                    #}
-                    break
+                    $currentRound.blue = $countNo
+                    if ($countNo -gt $currentGame.bmax) {
+                        #$invalid = 1
+                        $currentGame.bmax = $countNo
+                    }
+                    
                 }
             }
         }
-        
+        $currentGame.Rounds += $currentRound
         <# calculate total cubes shown in a round #>
         #$round.total = $round.red + $round.green + $round.blue
         
         #if ($round.total -gt $tmax) {
         #   $invalid = 1
         #}
-    
+        
     }
-
+$currentGame
     <# checks whether a game (line) has been marked as invalid, if it hasn't add that game's ID to a running total #>
     #switch ($invalid) {
     #    0 {
@@ -91,5 +94,4 @@ foreach ($line in $text.Split([Environment]::NewLine, [StringSplitOptions]::Remo
     #        break
     #    }
     #}
-
 }
