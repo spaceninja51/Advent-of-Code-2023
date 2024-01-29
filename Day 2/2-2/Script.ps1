@@ -7,11 +7,12 @@ class Round {
     #[int] $total
 }
 
+<# create a class used to represent each game (line) and track its color reauirements while storing each round's data #>
 class Game {
     [int] $ID
-    [int] $bmax = 0
-    [int] $gmax = 0
-    [int] $rmax = 0
+    [int] $bmin = 0
+    [int] $gmin = 0
+    [int] $rmin = 0
     [Array] $Rounds
 }
 <# initialize variables #>
@@ -37,7 +38,7 @@ foreach ($line in $text.Split([Environment]::NewLine, [StringSplitOptions]::Remo
     $roundNum = 0
 
     foreach($pull in $lineText[1].Split(";")) {
-        <# create a new round object after each ;. For part 2, keep track of round number as well#>
+        <# create a new round object after each ;. For part 2, keep track of round number as well, resetting after each line #>
         $currentRound = [Round]::new()
         $roundNum++
         $currentRound.ID = $roundNum
@@ -46,34 +47,37 @@ foreach ($line in $text.Split([Environment]::NewLine, [StringSplitOptions]::Remo
             <# check the number to be set #>
             [int] $countNo = $count.Split(" ")[0].Trim()
 
-            <# find the color the number goes to and set it #>
+            <# find the color the number goes to and compares it to the existing max for the corresponding color, if it is the new max set it as so #>
             $countColor = $count.Split(" ")[1].Trim()
             switch ($countColor) {
                 "red" {
                     $currentRound.red = $countNo
-                    if ($countNo -gt $currentGame.rmax) {
+                    if ($countNo -gt $currentGame.rmin) {
                         #$invalid = 1
-                        $currentGame.rmax = $countNo
+                        $currentGame.rmin = $countNo
                     }
                 }
                 "green" {
                     $currentRound.green = $countNo
-                    if ($countNo -gt $currentGame.gmax) {
+                    if ($countNo -gt $currentGame.gmin) {
                         #$invalid = 1
-                        $currentGame.gmax = $countNo
+                        $currentGame.gmin = $countNo
                     }
                 }
                 "blue" {
                     $currentRound.blue = $countNo
-                    if ($countNo -gt $currentGame.bmax) {
+                    if ($countNo -gt $currentGame.bmin) {
                         #$invalid = 1
-                        $currentGame.bmax = $countNo
+                        $currentGame.bmin = $countNo
                     }
                     
                 }
             }
         }
+        
+        <# adds the filled out current round to an array of rounds for the current game#>
         $currentGame.Rounds += $currentRound
+        
         <# calculate total cubes shown in a round #>
         #$round.total = $round.red + $round.green + $round.blue
         
@@ -82,7 +86,8 @@ foreach ($line in $text.Split([Environment]::NewLine, [StringSplitOptions]::Remo
         #}
         
     }
-$currentGame
+    
+    $answer2 += $currentGame.rmin * $currentGame.gmin * $currentGame.bmin
     <# checks whether a game (line) has been marked as invalid, if it hasn't add that game's ID to a running total #>
     #switch ($invalid) {
     #    0 {
@@ -94,4 +99,7 @@ $currentGame
     #        break
     #    }
     #}
+
+    <# Now to multiply each power#>
 }
+$answer2
