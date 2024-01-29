@@ -1,5 +1,4 @@
-#$text = "Game 1: 1 red, 2 green, 6 blue"
-$text = Get-Content "C:\Users\cwg24\OneDrive\Desktop\Nerd Shit\Scripting\Advent of Code 2023\Day 2\2-1\Input.txt"
+# Create a class used to represent an individual round of the game
 class Round {
     [int] $red
     [int] $green
@@ -7,14 +6,21 @@ class Round {
     [int] $total
 }
 
+#initialize variables
+$gameID, $answer = 0
+# set desired red, green, and blue maximum values
 $rmax = 12
 $gmax = 13
 $bmax = 14
 $tmax = $rmax + $gmax + $bmax
+
+# data to be processed
+$text = Get-Content "C:\Users\cwg24\OneDrive\Desktop\Nerd Shit\Scripting\Advent of Code 2023\Day 2\2-1\Input.txt"
+
 # Iterate through each line of the input text and break the line into the two strings made of the text on either side of :
 foreach ($line in $text.Split([Environment]::NewLine, [StringSplitOptions]::RemoveEmptyEntries)) {
     
-    $countNo, $answer, $gameID, $invalid = 0
+    $invalid = 0
     $lineText = $line.Split(":")
     
     foreach($pull in $lineText[1].Split(";")) {
@@ -58,6 +64,7 @@ foreach ($line in $text.Split([Environment]::NewLine, [StringSplitOptions]::Remo
         }
     }
 
+    # checks whether a game (line) has been marked as invalid, if it hasn't add that game's ID to a running total
     switch ($invalid) {
         0 {
             $gameID = $lineText[0] -replace '[a-zA-Z]',''
