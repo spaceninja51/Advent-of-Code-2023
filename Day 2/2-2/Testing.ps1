@@ -28,7 +28,7 @@ class Game {
 $answer = 0
 
 <# data to be processed #>
-$file = "C:\Users\cwg24\OneDrive\Desktop\Nerd Shit\Scripting\Advent-of-Code-2023\Day 2\Input.txt"
+$file = "C:\Scripting\Advent-of-Code-2023\Day 2\Input.txt"
 $text = Get-Content $file
 
 <# Looping through each line by converting the text into an array with a new entry at each new line #>
@@ -37,6 +37,6 @@ foreach ($line in $text.Split([Environment]::NewLine)) {
     <# Gets the games # and creates a new Game object with that # as its ID #>
     $GameID = $line[0] -replace '[a-zA-Z]',''
     $currentGame = New-Object -TypeName Game -Property ID -Value $GameID
-    # Add-Member $currentGame NoteProperty -Name ID -Value $GameID
+    Add-Member -TypeName NoteProperty -Name ID -Value $GameID
     
 }
