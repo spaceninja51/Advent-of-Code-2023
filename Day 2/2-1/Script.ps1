@@ -15,7 +15,7 @@ $bmax = 14
 $tmax = $rmax + $gmax + $bmax
 
 # data to be processed
-$text = Get-Content "C:\Users\cwg24\OneDrive\Desktop\Nerd Shit\Scripting\Advent of Code 2023\Day 2\2-1\Input.txt"
+$text = Get-Content "C:\Users\cwg24\OneDrive\Desktop\Nerd Shit\Scripting\Advent-of-Code-2023\Day 2\Input.txt"
 
 # Iterate through each line of the input text and break the line into the two strings made of the text on either side of :
 foreach ($line in $text.Split([Environment]::NewLine, [StringSplitOptions]::RemoveEmptyEntries)) {
