@@ -46,6 +46,8 @@ foreach ($line in $games) {
     <# Iterates through each pull of a game (formatted as "'number 'color'") #>
     foreach ($pull in $Pulls) {
         
+        $pull = $pull.Trim()
+        
         <# The pull's color is defined as the second word in the pull and number
         as the first #>
         [string] $color = $pull.Split(' ')[1]
@@ -77,11 +79,13 @@ foreach ($line in $games) {
     then checks if that number is considered a valid game by the limits of part 1. 
     If so, its power is determined by multiplying the maximum number required of 
     each color's cubes to play that game and adds it to the answer #>
-    if ($rmax -ile $rLim -and $gmax -ile $gLim -and $bmax -ile $bLim) {
+    #if ($rmax -ile $rLim -and $gmax -ile $gLim -and $bmax -ile $bLim) {
         $power = $rmax * $gmax * $bmax
         $answer += $power
-    }
+    #}
 }
 
 <# Outputs the answer #>
 $answer
+
+<# Answer is 84911 #>
