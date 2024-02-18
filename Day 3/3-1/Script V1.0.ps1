@@ -22,4 +22,18 @@ foreach ($line in $text) {
         $prevLine = $text[$lineNo - 1]
     }
 
+    # No idea, getting blank output
+    $charNum = 0
+    foreach ($char in $line) {
+        $charNum++
+        if ($char -eq '\d') {
+            $numPos + [string] $charNum
+        }
+        elseif ($char -eq '\W') {
+            $symPos + $charNum
+        }
+    }
+    $symPos
+    $numPos
+
 }
